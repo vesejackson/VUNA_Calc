@@ -1,553 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Nyikwagh Vese Jackson — SEN 482</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg:        #0a0e1a;
-      --surface:   #111827;
-      --border:    #1e2d40;
-      --accent:    #00c8ff;
-      --accent2:   #7c3aed;
-      --green:     #10b981;
-      --text:      #e2e8f0;
-      --muted:     #64748b;
-      --mono:      'JetBrains Mono', monospace;
-      --sans:      'Space Grotesk', sans-serif;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--sans);
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    /* ── GRID NOISE TEXTURE ── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(0,200,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,200,255,0.03) 1px, transparent 1px);
-      background-size: 40px 40px;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* ── NAV ── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 2rem;
-      background: rgba(10,14,26,0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav-logo {
-      font-family: var(--mono);
-      font-size: 0.85rem;
-      color: var(--accent);
-      letter-spacing: 0.05em;
-    }
-
-    .nav-links { display: flex; gap: 2rem; }
-    .nav-links a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.875rem;
-      font-weight: 500;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--accent); }
-
-    /* ── HERO ── */
-    .hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 8rem 2rem 4rem;
-      z-index: 1;
-    }
-
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-family: var(--mono);
-      font-size: 0.75rem;
-      color: var(--accent);
-      border: 1px solid rgba(0,200,255,0.3);
-      padding: 0.35rem 0.9rem;
-      border-radius: 999px;
-      margin-bottom: 2rem;
-      letter-spacing: 0.08em;
-    }
-
-    .hero-badge::before {
-      content: '';
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--green);
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(1.4); }
-    }
-
-    .hero h1 {
-      font-size: clamp(2.5rem, 7vw, 5rem);
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      line-height: 1.05;
-      margin-bottom: 1rem;
-    }
-
-    .hero h1 .name-accent {
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero-sub {
-      font-family: var(--mono);
-      font-size: 0.9rem;
-      color: var(--muted);
-      margin-bottom: 0.5rem;
-      letter-spacing: 0.05em;
-    }
-
-    .hero-institution {
-      font-size: 1rem;
-      color: var(--muted);
-      margin-bottom: 3rem;
-    }
-
-    .hero-cards {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-bottom: 3rem;
-    }
-
-    .info-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1rem 1.5rem;
-      text-align: left;
-      min-width: 160px;
-    }
-
-    .info-card .label {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      color: var(--muted);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 0.3rem;
-    }
-
-    .info-card .value {
-      font-weight: 600;
-      font-size: 0.95rem;
-      color: var(--text);
-    }
-
-    .info-card .value.accent { color: var(--accent); }
-
-    .hero-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color: #fff;
-      font-weight: 600;
-      font-size: 0.95rem;
-      padding: 0.85rem 2rem;
-      border-radius: 999px;
-      text-decoration: none;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 0 30px rgba(0,200,255,0.25);
-    }
-
-    .hero-cta:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 45px rgba(0,200,255,0.4);
-    }
-
-    /* ── SECTIONS ── */
-    section {
-      position: relative;
-      z-index: 1;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 5rem 2rem;
-    }
-
-    .section-label {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      color: var(--accent);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 0.75rem;
-    }
-
-    .section-title {
-      font-size: clamp(1.75rem, 4vw, 2.5rem);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 3rem;
-    }
-
-    /* ── PIPELINE FLOW ── */
-    .pipeline {
-      display: flex;
-      align-items: stretch;
-      gap: 0;
-      overflow-x: auto;
-      padding-bottom: 1rem;
-    }
-
-    .pipe-step {
-      flex: 1;
-      min-width: 160px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 0;
-      padding: 1.75rem 1.25rem;
-      position: relative;
-      transition: border-color 0.2s;
-    }
-
-    .pipe-step:first-child { border-radius: 16px 0 0 16px; }
-    .pipe-step:last-child  { border-radius: 0 16px 16px 0; }
-
-    .pipe-step:hover { border-color: var(--accent); }
-
-    .pipe-step + .pipe-step::before {
-      content: '→';
-      position: absolute;
-      left: -14px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--accent);
-      font-size: 1.2rem;
-      z-index: 2;
-      background: var(--bg);
-      padding: 0 2px;
-    }
-
-    .pipe-icon {
-      font-size: 1.75rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .pipe-title {
-      font-weight: 700;
-      font-size: 0.9rem;
-      margin-bottom: 0.4rem;
-      color: var(--text);
-    }
-
-    .pipe-desc {
-      font-size: 0.78rem;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    .pipe-tag {
-      display: inline-block;
-      margin-top: 0.75rem;
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      color: var(--accent);
-      border: 1px solid rgba(0,200,255,0.25);
-      padding: 0.2rem 0.5rem;
-      border-radius: 4px;
-    }
-
-    /* ── TECH STACK ── */
-    .stack-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-    }
-
-    .stack-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.5rem;
-      transition: border-color 0.2s, transform 0.2s;
-    }
-
-    .stack-card:hover {
-      border-color: var(--accent2);
-      transform: translateY(-3px);
-    }
-
-    .stack-icon { font-size: 2rem; margin-bottom: 0.75rem; }
-    .stack-name { font-weight: 700; margin-bottom: 0.25rem; }
-    .stack-desc { font-size: 0.8rem; color: var(--muted); }
-
-    /* ── CALCULATOR LINK ── */
-    .calc-section {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 3rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 2rem;
-      flex-wrap: wrap;
-    }
-
-    .calc-info h3 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-
-    .calc-info p {
-      color: var(--muted);
-      font-size: 0.9rem;
-      max-width: 400px;
-    }
-
-    .calc-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: transparent;
-      color: var(--accent);
-      border: 1px solid var(--accent);
-      font-weight: 600;
-      font-size: 0.9rem;
-      padding: 0.75rem 1.75rem;
-      border-radius: 999px;
-      text-decoration: none;
-      transition: background 0.2s, color 0.2s;
-      white-space: nowrap;
-    }
-
-    .calc-btn:hover {
-      background: var(--accent);
-      color: #000;
-    }
-
-    /* ── FOOTER ── */
-    footer {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      padding: 2rem;
-      border-top: 1px solid var(--border);
-      font-family: var(--mono);
-      font-size: 0.75rem;
-      color: var(--muted);
-    }
-
-    footer a { color: var(--accent); text-decoration: none; }
-
-    /* ── DIVIDER ── */
-    .divider {
-      border: none;
-      border-top: 1px solid var(--border);
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    @media (max-width: 600px) {
-      .pipeline { flex-direction: column; }
-      .pipe-step { border-radius: 12px !important; }
-      .pipe-step + .pipe-step::before { content: '↓'; left: 50%; top: -14px; transform: translateX(-50%); }
-      .calc-section { flex-direction: column; text-align: center; }
-      nav { padding: 1rem; }
-      .nav-links { gap: 1rem; }
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VUNA Calculator</title>
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/calculator.css">
 </head>
+
 <body>
+  <!-- Theme Toggle Button -->
+  <button class="btn btn-outline-secondary theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()"
+    title="Toggle dark/light mode">
+    🌙
+  </button>
 
-  <!-- NAV -->
-  <nav>
-    <div class="nav-logo">VUG/SEN/22/7366</div>
-    <div class="nav-links">
-      <a href="#pipeline">Pipeline</a>
-      <a href="#stack">Stack</a>
-      <a href="#calculator">Calculator</a>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-6 col-md-6 col-sm-8">
+
+        <div class="border border-dotted border-3 rounded-3 p-3 mb-4 bg-white bg-opacity-50">
+          <h4 class="text-center group-header mb-0">VUNA CALCULATOR</h4>
+          <p class="text-center text-small text-muted">
+            <i>Created by set 2025/26 Software Engineering</i>
+          </p>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card calculator-card">
+              <div class="card-body p-4">
+                <div class="calculator">
+                  <div class="display-container">
+                    <input type="text" class="form-control" id="result" placeholder="0" disabled />
+                  </div>
+
+                  <div class="btn-grid">
+                    <button class="btn btn-light" onclick="bracketToResult('(')">(</button>
+                    <button class="btn btn-light" onclick="bracketToResult(')')">)</button>
+                    <button class="btn btn-light" onclick="backspace()">←</button>
+
+                    <button class="btn btn-action" onclick="clearResult()">AC</button>
+
+                    <button class="btn btn-light" onclick="appendToResult(7)">7</button>
+                    <button class="btn btn-light" onclick="appendToResult(8)">8</button>
+                    <button class="btn btn-light" onclick="appendToResult(9)">9</button>
+
+                    <button class="btn btn-operator" onclick="operatorToResult('/')">÷</button>
+                    <button class="btn btn-light" onclick="appendToResult(4)">4</button>
+                    <button class="btn btn-light" onclick="appendToResult(5)">5</button>
+                    <button class="btn btn-light" onclick="appendToResult(6)">6</button>
+
+                    <button class="btn btn-operator" onclick="operatorToResult('*')">×</button>
+                    <button class="btn btn-light" onclick="appendToResult(1)">1</button>
+                    <button class="btn btn-light" onclick="appendToResult(2)">2</button>
+                    <button class="btn btn-light" onclick="appendToResult(3)">3</button>
+
+                    <button class="btn btn-operator" onclick="operatorToResult('+')">+</button>
+                    <button class="btn btn-light" onclick="appendToResult('.')">.</button>
+                    <button class="btn btn-light" onclick="appendToResult(0)">0</button>
+                    <button class="btn btn-operator" onclick="percentToResult('%')">%</button>
+
+                    <button class="btn btn-operator" onclick="operatorToResult('-')">−</button>
+
+                    <button class="btn btn-equals" onclick="calculateResult()" style="grid-column: span 4;">=</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 📜 CALCULATION HISTORY PANEL -->
+            <div class="history-panel mt-3">
+              <div class="history-header">
+                <span>📜 History</span>
+                <button class="btn btn-sm history-clear-btn" onclick="clearHistory()">Clear</button>
+              </div>
+              <p id="history-empty" class="history-empty-msg">No calculations yet.</p>
+              <ul id="history-list" class="history-list"></ul>
+            </div>
+
+          </div>
+        </div>
+      </div>
     </div>
-  </nav>
-
-  <!-- HERO -->
-  <div class="hero">
-    <div class="hero-badge">SEN 482 — CI/CD Practical Defense</div>
-
-    <h1>
-      <span class="name-accent">Nyikwagh Vese</span><br/>Jack
-    </h1>
-
-    <p class="hero-sub">VUG/SEN/22/7366 &nbsp;·&nbsp; 400 Level Software Engineering</p>
-    <p class="hero-institution">Veritas University Abuja</p>
-
-    <div class="hero-cards">
-      <div class="info-card">
-        <div class="label">Course</div>
-        <div class="value accent">SEN 482</div>
-      </div>
-      <div class="info-card">
-        <div class="label">Topic</div>
-        <div class="value">CI/CD Pipeline</div>
-      </div>
-      <div class="info-card">
-        <div class="label">Domain</div>
-        <div class="value accent">jackson.vudse26.cloud</div>
-      </div>
-      <div class="info-card">
-        <div class="label">Status</div>
-        <div class="value" style="color: var(--green);">● Live</div>
-      </div>
-    </div>
-
-    <a href="#pipeline" class="hero-cta">View CI/CD Pipeline ↓</a>
   </div>
 
-  <hr class="divider"/>
-
-  <!-- PIPELINE SECTION -->
-  <section id="pipeline">
-    <div class="section-label">Automation Flow</div>
-    <h2 class="section-title">CI/CD Pipeline</h2>
-
-    <div class="pipeline">
-      <div class="pipe-step">
-        <div class="pipe-icon">✍️</div>
-        <div class="pipe-title">Code Push</div>
-        <div class="pipe-desc">Developer pushes changes to the main branch on GitHub</div>
-        <span class="pipe-tag">git push</span>
-      </div>
-      <div class="pipe-step">
-        <div class="pipe-icon">⚡</div>
-        <div class="pipe-title">Trigger</div>
-        <div class="pipe-desc">GitHub Actions detects the push and starts the workflow automatically</div>
-        <span class="pipe-tag">on: push</span>
-      </div>
-      <div class="pipe-step">
-        <div class="pipe-icon">🔍</div>
-        <div class="pipe-title">Lint & Build</div>
-        <div class="pipe-desc">Workflow validates HTML, CSS and JS files exist and are correct</div>
-        <span class="pipe-tag">ubuntu-latest</span>
-      </div>
-      <div class="pipe-step">
-        <div class="pipe-icon">🐳</div>
-        <div class="pipe-title">Docker Build</div>
-        <div class="pipe-desc">Docker image is built and pushed to Docker Hub registry</div>
-        <span class="pipe-tag">docker push</span>
-      </div>
-      <div class="pipe-step">
-        <div class="pipe-icon">🚀</div>
-        <div class="pipe-title">FTP Deploy</div>
-        <div class="pipe-desc">Updated files are deployed automatically to the live server via FTP</div>
-        <span class="pipe-tag">CyberPanel</span>
-      </div>
-      <div class="pipe-step">
-        <div class="pipe-icon">🌐</div>
-        <div class="pipe-title">Live</div>
-        <div class="pipe-desc">Changes reflect instantly on jackson.vudse26.cloud</div>
-        <span class="pipe-tag">✓ deployed</span>
-      </div>
-    </div>
-  </section>
-
-  <hr class="divider"/>
-
-  <!-- TECH STACK -->
-  <section id="stack">
-    <div class="section-label">Technologies Used</div>
-    <h2 class="section-title">Tech Stack</h2>
-
-    <div class="stack-grid">
-      <div class="stack-card">
-        <div class="stack-icon">🐙</div>
-        <div class="stack-name">GitHub</div>
-        <div class="stack-desc">Version control and source of truth for all code changes</div>
-      </div>
-      <div class="stack-card">
-        <div class="stack-icon">⚙️</div>
-        <div class="stack-name">GitHub Actions</div>
-        <div class="stack-desc">CI/CD automation — runs the pipeline on every push to main</div>
-      </div>
-      <div class="stack-card">
-        <div class="stack-icon">🐳</div>
-        <div class="stack-name">Docker</div>
-        <div class="stack-desc">Containerises the application for consistent deployment</div>
-      </div>
-      <div class="stack-card">
-        <div class="stack-icon">📦</div>
-        <div class="stack-name">Docker Hub</div>
-        <div class="stack-desc">Cloud registry that stores and distributes the Docker image</div>
-      </div>
-      <div class="stack-card">
-        <div class="stack-icon">🖥️</div>
-        <div class="stack-name">CyberPanel</div>
-        <div class="stack-desc">Web hosting panel managing the VPS and domain configuration</div>
-      </div>
-      <div class="stack-card">
-        <div class="stack-icon">📡</div>
-        <div class="stack-name">FTP Deploy</div>
-        <div class="stack-desc">Secure file transfer from GitHub Actions to the live server</div>
-      </div>
-    </div>
-  </section>
-
-  <hr class="divider"/>
-
-  <!-- CALCULATOR LINK -->
-  <section id="calculator">
-    <div class="section-label">Project</div>
-    <h2 class="section-title">VUNA Calculator</h2>
-
-    <div class="calc-section">
-      <div class="calc-info">
-        <h3>VUNA-Calc with History</h3>
-        <p>A stripped-down calculator built for SEN 482, featuring basic arithmetic operations, CE/AC controls, and a calculation history panel. Deployed via this same CI/CD pipeline.</p>
-      </div>
-      <a href="https://github.com/vesejackson/VUNA_Calc" target="_blank" class="calc-btn">
-        View on GitHub →
-      </a>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
-    <p>Nyikwagh Vese Jackson &nbsp;·&nbsp; VUG/SEN/22/7366 &nbsp;·&nbsp; SEN 482 CI/CD &nbsp;·&nbsp; Veritas University Abuja</p>
-    <p style="margin-top:0.5rem;">Deployed via GitHub Actions → FTP → <a href="https://jackson.vudse26.cloud">jackson.vudse26.cloud</a></p>
-  </footer>
-
+  <script src="assets/js/bootstrap.min.js"></script>
+  <script src="assets/js/script.js"></script>
+  <button id="scroll-to-calculator" title="Back to Calculator">↑</button>
 </body>
+
 </html>
